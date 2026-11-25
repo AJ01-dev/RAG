@@ -1,0 +1,52 @@
+Covariance and Correlation
+
+Covariance is a statistical measure that shows how two variables change together. It tells us whether two variables tend to increase or decrease together.
+
+If covariance is positive, it means that when one variable increases, the other variable tends to increase as well.
+
+If covariance is negative, it means that when one variable increases, the other variable tends to decrease.
+
+If covariance is close to zero, it means there is little or no linear relationship between the two variables.
+
+The formula for population covariance is:
+
+Cov(X, Y) = Σ[(Xi - X̄)(Yi - Ȳ)] / N
+
+where X̄ is the mean of X, Ȳ is the mean of Y, and N is the number of observations.
+
+Correlation is a standardized measure of the strength and direction of the linear relationship between two variables. Unlike covariance, correlation always lies between -1 and +1.
+
+The correlation coefficient is represented by r.
+
+If r = +1, there is a perfect positive linear relationship.
+
+If r = -1, there is a perfect negative linear relationship.
+
+If r = 0, there is no linear correlation between the variables.
+
+The formula for correlation is:
+
+r = Cov(X, Y) / (σX × σY)
+
+where Cov(X, Y) is the covariance between X and Y, σX is the standard deviation of X, and σY is the standard deviation of Y.
+
+Difference between Covariance and Correlation:
+
+Covariance indicates the direction of the relationship between two variables, but its value depends on the units of the variables.
+
+Correlation indicates both the direction and strength of the linear relationship and is always between -1 and +1.
+
+For example, suppose we have two variables: hours studied and exam marks. If students who study more hours generally get higher marks, the covariance between study hours and marks will be positive. The correlation will also generally be positive.
+
+Covariance is useful for understanding how two variables vary together. Correlation is useful when we want a standardized measure that allows relationships between different pairs of variables to be compared.
+
+Example:
+
+Consider the following data:
+
+Study Hours: 2, 4, 6, 8, 10
+Exam Marks: 40, 50, 60, 70, 80
+
+In this example, both study hours and exam marks increase together. Therefore, the covariance is positive and the correlation is also positive.
+
+Correlation does not necessarily imply causation. A high correlation between two variables does not prove that one variable causes the other.
