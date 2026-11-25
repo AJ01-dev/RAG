@@ -137,3 +137,43 @@ Both services have been verified end-to-end:
 - **Backend Health Check**: Confirmed 100% operational with 129 persistent chunks in ChromaDB.
 - **RAG Generation**: Validated with Groq LLM (`openai/gpt-oss-120b`) producing grounded mathematical explanations with source citations (`notes.txt`, `deeplearningrag.pdf`).
 - **Frontend Build**: Validated via `npm run build` (Vite production bundle compiled with 0 errors).
+
+---
+
+## 🚀 Cloud Deployment Guide (Render + Vercel)
+
+### Step 1: Deploy Backend to Render (Python FastAPI)
+
+1. Go to [Render Dashboard](https://dashboard.render.com/) and click **New > Web Service** (or **New > Blueprint**).
+2. Connect your GitHub repository: `https://github.com/AJ01-dev/RAG`.
+3. Configure the following service settings:
+   - **Name**: `rag-document-intelligence-api`
+   - **Root Directory**: `server`
+   - **Environment / Runtime**: `Python 3`
+   - **Build Command**: `pip install -r requirements.txt`
+   - **Start Command**: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+4. Add Environment Variables:
+   - `PYTHON_VERSION`: `3.11.9`
+   - `GROQ_API_KEY`: *(Your Groq API Key from `.env`)*
+5. Click **Create Web Service**. Once deployed, Render will provide a public URL like:
+   `https://rag-document-intelligence-api.onrender.com`
+
+---
+
+### Step 2: Deploy Frontend to Vercel (React + Vite)
+
+1. Go to [Vercel Dashboard](https://vercel.com/dashboard) and click **Add New > Project**.
+2. Select your repository: `https://github.com/AJ01-dev/RAG`.
+3. Configure the project settings:
+   - **Framework Preset**: `Vite`
+   - **Root Directory**: Click *Edit* and select `web-app`
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `dist`
+4. Add Environment Variable:
+   - `VITE_API_URL`: `https://<YOUR-RENDER-BACKEND-URL>.onrender.com/api`
+     *(Example: `https://rag-document-intelligence-api.onrender.com/api`)*
+5. Click **Deploy**. Vercel will build and launch your application at:
+   `https://<YOUR-PROJECT>.vercel.app`
+
+*(Note: You can also dynamically update or test your Backend API URL anytime directly inside the web application via **Settings > Backend API URL**)*
+

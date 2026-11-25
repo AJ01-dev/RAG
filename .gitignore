@@ -1,14 +1,37 @@
-# Python-generated files
+# Python
 __pycache__/
 *.py[oc]
 build/
 dist/
 wheels/
 *.egg-info
+.pytest_cache/
 
 # Virtual environments
-.venv
-server/.env
-server/.env
+.venv/
+venv/
+ENV/
+
+# Environment files (never commit secrets)
 .env
+.env.*
+!.env.example
 **/.env
+**/.env.*
+!**/.env.example
+
+# Node.js
+node_modules/
+**/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Vite / Build outputs
+.vite/
+**/dist/
+
+# OS files
+.DS_Store
+Thumbs.db

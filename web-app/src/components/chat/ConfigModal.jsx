@@ -1,5 +1,6 @@
-import React from 'react';
-import { X, Sliders, Check } from 'lucide-react';
+import React, { useState } from 'react';
+import { X, Sliders, Check, Globe } from 'lucide-react';
+import { getApiBaseUrl, setApiBaseUrl } from '../../services/api';
 
 const MODELS = [
   { id: 'openai/gpt-oss-120b', label: 'GPT OSS 120B (Groq)', desc: 'Current project model' },
@@ -26,7 +27,14 @@ const RETRIEVER_OPTIONS = [
 ];
 
 export default function ConfigModal({ isOpen, onClose, config, setConfig }) {
+  const [apiUrl, setApiUrl] = useState(getApiBaseUrl());
+
   if (!isOpen) return null;
+
+  const handleApply = () => {
+    setApiBaseUrl(apiUrl);
+    onClose();
+  };
 
   return (
     <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
@@ -49,8 +57,28 @@ export default function ConfigModal({ isOpen, onClose, config, setConfig }) {
 
         {/* Modal Body */}
         <div className="p-6 space-y-5 text-sm max-h-[75vh] overflow-y-auto">
+          {/* Backend API URL for Cloud Deployment */}
+          <div className="space-y-1.5">
+            <div className="flex items-center space-x-1.5">
+              <Globe className="w-3.5 h-3.5 text-blue-600" />
+              <label className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                Backend API URL (Render / Cloud)
+              </label>
+            </div>
+            <input
+              type="text"
+              value={apiUrl}
+              onChange={(e) => setApiUrl(e.target.value)}
+              placeholder="e.g. https://rag-backend.onrender.com/api or /api"
+              className="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 text-xs text-slate-900 font-mono placeholder-slate-400 focus:outline-none focus:border-blue-500"
+            />
+            <p className="text-[10px] text-slate-400">
+              Default is &apos;/api&apos; (local proxy) or set your Render backend URL.
+            </p>
+          </div>
+
           {/* LLM Selection */}
-          <div className="space-y-2">
+          <div className="space-y-2 pt-2 border-t border-slate-100">
             <label className="text-xs font-semibold uppercase tracking-wider text-slate-500">
               Inference Model (Groq)
             </label>
@@ -179,7 +207,7 @@ export default function ConfigModal({ isOpen, onClose, config, setConfig }) {
         {/* Modal Footer */}
         <div className="p-4 px-6 border-t border-slate-100 flex justify-end bg-slate-50/50">
           <button
-            onClick={onClose}
+            onClick={handleApply}
             className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold shadow-sm transition-colors"
           >
             Apply Settings

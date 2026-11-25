@@ -5,6 +5,9 @@ pydantic-settings>=2.0.0
 python-multipart>=0.0.9
 python-dotenv>=1.0.0
 
+# Linux SQLite fallback for ChromaDB on cloud platforms (Render, Railway, Streamlit)
+pysqlite3-binary; sys_platform == 'linux'
+
 # LangChain & Vector Store
 langchain>=0.2.0
 langchain-core>=0.2.0
