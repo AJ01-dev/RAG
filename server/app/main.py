@@ -1,3 +1,10 @@
+import os
+# Strict memory caps for 512MB RAM cloud environments (Render Free Tier)
+os.environ["MALLOC_ARENA_MAX"] = "2"
+os.environ["OMP_NUM_THREADS"] = "1"
+os.environ["MKL_NUM_THREADS"] = "1"
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
+
 import sys
 # Linux cloud deployment compatibility for ChromaDB (Render, Railway, etc.)
 try:
@@ -12,21 +19,12 @@ from contextlib import asynccontextmanager
 
 from app.core.config import settings
 from app.core.logger import logger
-from app.services.vectorstore import get_vectorstore, get_vector_count
-from app.services.embeddings import get_embeddings
 from app.routes import health, documents, rag, research
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Startup: Pre-warm embeddings and verify Chroma DB
-    logger.info("Starting RAG Intelligence API server...")
-    try:
-        get_embeddings()
-        get_vectorstore()
-        count = get_vector_count()
-        logger.info(f"RAG Server Ready. Chroma Vector Store initialized with {count} chunks.")
-    except Exception as e:
-        logger.warning(f"Chroma/Embedding deferred initialization notice: {e}")
+    # Port binds immediately so Render detects open port in <1 second!
+    logger.info("RAG Intelligence API server ready. Port bound immediately.")
     yield
     logger.info("Shutting down RAG Intelligence API server...")
 

@@ -1,4 +1,5 @@
 import os
+import sqlite3
 from pathlib import Path
 from typing import List, Dict, Any, Optional
 from langchain_chroma import Chroma
@@ -35,13 +36,36 @@ def get_vectorstore() -> Chroma:
 def get_vector_count() -> int:
     """
     Returns the total number of document embeddings stored.
+    Reads directly from SQLite when possible without triggering heavy model loads.
     """
+    global _vectorstore_instance
+    if _vectorstore_instance is not None:
+        try:
+            return _vectorstore_instance._collection.count()
+        except Exception:
+            pass
+
+    # Read count directly from SQLite database without loading PyTorch or embeddings
     try:
-        vs = get_vectorstore()
-        return vs._collection.count()
-    except Exception as e:
-        logger.warning(f"Could not get vector count: {e}")
-        return 0
+        persist_dir = settings.CHROMA_PERSIST_DIR
+        sqlite_file = os.path.join(persist_dir, "chroma.sqlite3")
+        if not os.path.exists(sqlite_file):
+            fallback = Path(persist_dir).parent.parent.parent / "chroma_db" / "chroma.sqlite3"
+            if fallback.exists():
+                sqlite_file = str(fallback)
+
+        if os.path.exists(sqlite_file):
+            conn = sqlite3.connect(sqlite_file)
+            cursor = conn.cursor()
+            cursor.execute("SELECT count(*) FROM embeddings")
+            row = cursor.fetchone()
+            conn.close()
+            if row:
+                return row[0]
+    except Exception:
+        pass
+
+    return 0
 
 def add_documents_to_vectorstore(documents: List[Document]) -> int:
     """
