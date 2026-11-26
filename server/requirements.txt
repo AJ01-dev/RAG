@@ -8,6 +8,9 @@ python-dotenv>=1.0.0
 # Linux SQLite fallback for ChromaDB on cloud platforms (Render, Railway, Streamlit)
 pysqlite3-binary; sys_platform == 'linux'
 
+# High-efficiency, low-memory ONNX Runtime for 512MB RAM cloud environments
+onnxruntime>=1.14.0
+
 # LangChain & Vector Store
 langchain>=0.2.0
 langchain-core>=0.2.0

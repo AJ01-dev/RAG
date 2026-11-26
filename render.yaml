@@ -5,7 +5,7 @@ services:
     plan: free
     region: oregon
     rootDir: server
-    buildCommand: pip install -r requirements.txt
+    buildCommand: pip install -r requirements.txt && python -c "from chromadb.utils import embedding_functions; embedding_functions.ONNXMiniLM_L6_V2()"
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT --workers 1
     envVars:
       - key: PYTHON_VERSION
