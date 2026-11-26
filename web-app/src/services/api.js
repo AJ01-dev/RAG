@@ -1,7 +1,11 @@
 import axios from 'axios';
 
 export const getApiBaseUrl = () => {
-  return localStorage.getItem('rag_api_url') || import.meta.env.VITE_API_URL || '/api';
+  return (
+    localStorage.getItem('rag_api_url') ||
+    import.meta.env.VITE_API_URL ||
+    'https://rag-backend-9r2g.onrender.com/api'
+  );
 };
 
 export const setApiBaseUrl = (url) => {
